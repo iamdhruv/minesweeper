@@ -22,17 +22,13 @@ table {
 table, td {
     border-collapse: collapse;
     border: 4px solid #f2cda8;
-    border-style: outset;
+    /*border-style: outset;*/
 }
 td {
     font-size: 10px;
     line-height: 10px;
     text-align: center;
     color: red;
-}
-
-.table-outset-removed {
-    border: 4px solid #f2cda8;
 }
 
 .mine-modal {
@@ -82,5 +78,6 @@ td {
 }
 
 .opened { 
-    border: 2px solid #f2cda8;
+    border: 4px solid #f2cda8;
+    background-color: #f2cda8;
 }

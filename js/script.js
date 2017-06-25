@@ -80,7 +80,7 @@ var GameController = (function() {
         });
         return blocksNeeded;
     }
-    
+
     var clickedBlockOperation = function(block) {
         var response = adjacentBlocksOperations(block);
         if(response) {
@@ -127,10 +127,10 @@ var GameController = (function() {
         var isBomb, isZero, img;
         img = document.createElement('img');
         img.src = "img/bomb.svg";
-        var table = document.querySelector('.minesweeper-table').classList.add("table-outset-removed");
+        var table = document.querySelector('.minesweeper-table').classList.add("opened");
         var blocks = document.querySelectorAll('.single-block');
         for(var i=0; i<blocks.length; i++) {
-            blocks[i].classList.add("table-outset-removed");
+            blocks[i].classList.add("opened");
             isBomb = blocks[i].classList.contains('bomb');
             isNotZero = blocks[i].getAttribute('data-no_of_adjacent_bombs') > 0 ? true : false;
             if(isBomb) {
