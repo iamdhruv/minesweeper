@@ -19,7 +19,7 @@ table {
 .bomb {
     /*background-color: red;*/
 }
-table, tr, th, td {
+table, td {
     border-collapse: collapse;
     border: 4px solid #f2cda8;
     border-style: outset;
@@ -82,5 +82,5 @@ td {
 }
 
 .opened { 
-    background-color: green;
+    border: 2px solid #f2cda8;
 }

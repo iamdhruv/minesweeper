@@ -2,9 +2,9 @@ var GameController = (function() {
     var levels, data;
 
     levels = {
-        1: {fieldSize: 4, noOfBombs: 1},
-        2: {fieldSize: 10, noOfBombs: 1},
-        3: {fieldSize: 15, noOfBombs: 1},
+        1: {fieldSize: 4, noOfBombs: 4},
+        2: {fieldSize: 10, noOfBombs: 10},
+        3: {fieldSize: 15, noOfBombs: 20},
         4: {fieldSize: 15, noOfBombs: 30},
         5: {fieldSize: 20, noOfBombs: 30},
         6: {fieldSize: 20, noOfBombs: 50},
@@ -80,6 +80,7 @@ var GameController = (function() {
         });
         return blocksNeeded;
     }
+    
     var clickedBlockOperation = function(block) {
         var response = adjacentBlocksOperations(block);
         if(response) {
@@ -111,18 +112,17 @@ var GameController = (function() {
             block.classList.add('opened');
             blockId = currentBlockId.split('-')[1];
             blocksTocheck = getBlocksToCheck(blockId);
-            console.log(currentBlockId);
-            console.log(blocksTocheck);
-            // blocksTocheck.forEach(function(item) {
-            //     if(item >= 1   && item <= (data.fieldSize * data.fieldSize)) {
-            //         res = adjacentBlocksOperations(document.getElementById('block-' + item));
-            //     }
-            // });
+            blocksTocheck.forEach(function(item) {
+                if(item >= 0   && item < (data.fieldSize * data.fieldSize)) {
+                    res = adjacentBlocksOperations(document.getElementById('block-' + item));
+                }
+            });
         } else if(isGreaterThanZero) {
             block.classList.add('opened');
             block.innerHTML = block.getAttribute('data-no_of_adjacent_bombs');
         }
     }
+
     var openAllBlocks = function() {
         var isBomb, isZero, img;
         img = document.createElement('img');
@@ -174,20 +174,10 @@ var GameController = (function() {
                     for(var i=0; i<fieldSize; i++) {
                         for(var j=0; j<fieldSize; j++) {
                             noOfBombs = 0;
-                            currentBlock = (fieldSize * i) + j + 1;
-                            blocksToCheckForBombs = [
-                                (fieldSize * (i-1)) + (j-1) + 1,
-                                (fieldSize * (i-1)) + (j) + 1,
-                                (fieldSize * (i-1)) + (j+1) + 1,
-                                (fieldSize * (i)) + (j-1) + 1,
-                                (fieldSize * (i)) + (j+1) + 1,
-                                (fieldSize * (i+1)) + (j-1) + 1,
-                                (fieldSize * (i+1)) + (j) + 1,
-                                (fieldSize * (i+1)) + (j+1) + 1,
-                            ];
-                            
+                            currentBlock = (fieldSize * i) + j;
+                            blocksToCheckForBombs = getBlocksToCheck(currentBlock);
                             blocksToCheckForBombs.forEach(function(item) {
-                                if(item >= 1 && item <= (fieldSize * fieldSize)) {
+                                if(item >= 0 && item < (fieldSize * fieldSize)) {
                                     hasBomb = document.getElementById("block-" + item).classList.contains('bomb');
                                     noOfBombs = hasBomb === true ? (noOfBombs+1) : noOfBombs;
                                 }
