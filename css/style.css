@@ -3,14 +3,18 @@ html, body {
 }
 
 body {
-    background-color: #b06a3a;
+    background-color: #3aacb0;
     color: #546270;
 }
 .single-block {
     height: 15px;
     width: 15px;
     background-color: #fff5e6;
-    /*background-image: url('../img/blocks.svg');*/
+}
+
+.single-block img{
+    height: 13px;
+    width: 13px;
 }
 table {
     margin: 100px auto;
@@ -21,7 +25,7 @@ table {
 }
 table, td {
     border-collapse: collapse;
-    border: 4px solid #f2cda8;
+    border: 4px solid #a8daf2;
     /*border-style: outset;*/
 }
 td {
@@ -53,7 +57,7 @@ td {
 .level-select-btn {
     border: 0;
     padding: 10px;
-    border:  3px solid	#ff7c23;
+    border:  3px solid	#23aaff;
     margin-right: 15px;
     cursor: pointer;
     background-color: #fff;
@@ -63,7 +67,7 @@ td {
 }
 
 .level-select-btn:hover {
-    background-color: #ff7c23;
+    background-color: #23aaff;
     color: #fff;
     outline: 0;
 }
@@ -78,6 +82,6 @@ td {
 }
 
 .opened { 
-    border: 4px solid #f2cda8;
-    background-color: #f2cda8;
+    border: 4px solid #a8daf2;
+    background-color: #a8daf2;
 }

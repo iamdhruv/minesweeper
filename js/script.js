@@ -1,39 +1,35 @@
 var GameController = (function() {
-    var levels, data;
-
+    var levels;
+    var data;
     levels = {
-        1: {fieldSize: 4, noOfBombs: 4},
-        2: {fieldSize: 10, noOfBombs: 10},
-        3: {fieldSize: 15, noOfBombs: 20},
-        4: {fieldSize: 15, noOfBombs: 30},
-        5: {fieldSize: 20, noOfBombs: 30},
-        6: {fieldSize: 20, noOfBombs: 50},
-    }
-
+        "1": {fieldSize: 10, noOfBombs: 5},
+        "2": {fieldSize: 10, noOfBombs: 10},
+        "3": {fieldSize: 15, noOfBombs: 20},
+        "4": {fieldSize: 15, noOfBombs: 30},
+        "5": {fieldSize: 20, noOfBombs: 30},
+        "6": {fieldSize: 20, noOfBombs: 40}
+    };
     data = {
         levelSelected: 0,
         bombsIndices: [],
         totalBlocks: 0,
         noOfBombs: 0,
         fieldSize: 0
-    }
-    
+    };
     var compareNumbersForSort = function(n1, n2) {
-        return (n1 - n2); 
-    }
-
+        return (n1 - n2);
+        };
     var getLevelMasterData = function(level) {
         return levels[level];
-    }
-
+    };
     var setLevelSelected = function(level) {
         data.levelSelected = level;
-    }
-
+    };
     var setRandomBlockIndices = function(totalBlocks, noOfIndices) {
-        var indices, randomNo;
-        indices = [];
-        for(var i=0; i<noOfIndices; i = i+1) {
+        var indices = [];
+        var randomNo;
+        var i;
+        for(i=0; i<noOfIndices; i=i+1) {
             randomNo = Math.floor(Math.random() * (totalBlocks - 1));
             if(indices.indexOf(randomNo) === -1) {
                 indices.push(randomNo);
@@ -42,8 +38,7 @@ var GameController = (function() {
             }
         }
         return indices.sort(compareNumbersForSort);
-    }
-
+    };
     var getRandomBlocksHavingBombs = function() {
         var levelMasterData;
         levelMasterData = getLevelMasterData(data.levelSelected);
@@ -52,12 +47,10 @@ var GameController = (function() {
         data.fieldSize = levelMasterData.fieldSize;
         data.bombsIndices = setRandomBlockIndices(data.totalBlocks, data.noOfBombs);
         return data.bombsIndices;
-    }
-
+    };
     var getData = function() {
         return data;
-    }
-
+    };
     var getBlocksToCheck = function(currentBlockId) {
         var i,j, blocksNeeded, blocksToCheck;
         blocksNeeded = [];
