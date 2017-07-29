@@ -142,7 +142,7 @@ var GameController = (function() {
     };
 
     var addBlocks = function(fieldSize, blocksHavingBombs) {
-
+        
         addBlankBlocks();
 
         function addBlankBlocks() {
@@ -192,14 +192,23 @@ var GameController = (function() {
         document.getElementById('select-level').style.display = "none";
     };
 
+    var showControlsTable = function() {
+        document.getElementById('controls-table').style.display = "table";
+        document.getElementById('bombs-left').innerText = data.noOfBombs;
+    };
+
     var rightClickedBlockOperation = function(block) {
-        if(block.classList.contains('flagged')) {
+        if(block.classList.contains('opened')) {
+            return;
+        } else if(block.classList.contains('flagged')) {
             block.classList.remove('flagged');
             block.classList.add('questioned');
+            document.getElementById('bombs-left').innerText = parseInt(document.getElementById('bombs-left').innerText) + 1;
         } else if(block.classList.contains('questioned')) {
             block.classList.remove('questioned');
         } else {
             block.classList.add('flagged');
+            document.getElementById('bombs-left').innerText = parseInt(document.getElementById('bombs-left').innerText) - 1;
         }
     }
 
@@ -210,7 +219,8 @@ var GameController = (function() {
         clickedBlockOperation: clickedBlockOperation,
         addBlocks: addBlocks,
         hideMineModal: hideMineModal,
-        rightClickedBlockOperation: rightClickedBlockOperation
+        rightClickedBlockOperation: rightClickedBlockOperation,
+        showControlsTable: showControlsTable
     }
     
 })();
@@ -235,6 +245,7 @@ var MainController = (function(GameCtrl) {
         randomBlocksHavingBombs = GameCtrl.getRandomBlocksHavingBombs(level);
         data = GameCtrl.getData();
         GameCtrl.addBlocks(data.fieldSize, randomBlocksHavingBombs);
+        GameCtrl.showControlsTable();
     }
 
     function blockClickListener(event) {

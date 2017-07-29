@@ -16,25 +16,23 @@ body {
     height: 13px;
     width: 13px;
 }
-table {
-    margin: 100px auto;
 
-}
 .bomb {
     /*background-color: red;*/
 }
 table {
+    margin: 30px auto;
     box-shadow: 8px 8px 24px rgba(0, 0, 0, .5);
 }
 table, td {
     border-collapse: collapse;
     border: 4px solid #a8daf2;
+    text-align: center;
     /*border-style: outset;*/
 }
-td {
+.minesweeper-table td {
     font-size: 10px;
     line-height: 10px;
-    text-align: center;
     color: red;
 }
 
@@ -95,4 +93,22 @@ td {
 
 .questioned {
     background-image: url('../img/block.svg');
+}
+
+
+.smiley {
+    height: 40px;
+}
+
+
+#controls-table {
+    background-color: #fff5e6;
+    font-size: 20px;
+    display: none;
+}
+
+#controls-table tr td {
+    font-size: 14px;
+    padding: 10px;
+    
 }
