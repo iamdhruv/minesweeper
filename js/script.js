@@ -119,6 +119,7 @@ var GameController = (function() {
             document.getElementById('smiley-message').classList.add('success-color');
             document.getElementById('bombs-left').innerText = 0;
             clearInterval(elapsedTimeHandler);
+            document.querySelector('.time-elapsed').classList.remove('default-color');
             document.querySelector('.time-elapsed').classList.add('success-color');
         }
     };
