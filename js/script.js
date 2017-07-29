@@ -17,7 +17,8 @@ var GameController = (function() {
         noOfBombs: 0,
         fieldSize: 0,
         sec: 0,
-        min: 0
+        min: 0,
+        gameCompleted: 0
     };
     var compareNumbersForSort = function(n1, n2) {
         return (n1 - n2);
@@ -79,7 +80,7 @@ var GameController = (function() {
     };
 
     var clickedBlockOperation = function(block) {
-        if(block.classList.contains('flagged') || block.classList.contains('questioned')) {
+        if(block.classList.contains('flagged') || block.classList.contains('questioned') || data.gameCompleted==1) {
             return;
         }
         var response = adjacentBlocksOperations(block);
@@ -88,14 +89,36 @@ var GameController = (function() {
                 document.getElementById("smiley").src = 'img/unhappy.svg';
                 document.getElementById('smiley-message').innerText = 'You Lost!!';
                 document.getElementById('bombs-left').innerText = 0;
-                block.classList.add('danger-color');
+                block.style.backgroundColor = "red";
+                openAllBlocks();
                 clearInterval(elapsedTimeHandler);
                 document.querySelector('.time-elapsed').classList.add('danger-color');
-                openAllBlocks();
-                // block.childNodes[0].src = 'img/red_bomb.svg';
+                document.getElementById('smiley-message').classList.add('danger-color');
             }
         }
+        if(isGameCompleted()) {
+            var allBombBlocks = document.querySelectorAll('.bomb');
+            data.gameCompleted = 1;
+            for(var i = 0; i< allBombBlocks.length; i++) {
+                allBombBlocks[i].classList.add('flagged');
+            }
+            document.getElementById("smiley").src = 'img/happy.svg';
+            document.getElementById('smiley-message').innerText = 'You Won!!';
+            document.getElementById('smiley-message').classList.add('success-color');
+            document.getElementById('bombs-left').innerText = 0;
+            clearInterval(elapsedTimeHandler);
+            document.querySelector('.time-elapsed').classList.add('success-color');
+        }
     };
+
+    var isGameCompleted = function() {
+        var openedBlocks = document.querySelectorAll('.opened').length;
+        if(data.totalBlocks === openedBlocks + data.noOfBombs) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     var adjacentBlocksOperations = function(block) {
         var currentBlockId, isBomb, isZero, isGreaterThanZero, blocksTocheck,res, isOpened,blocksNeeded, itemBlock;
@@ -206,6 +229,9 @@ var GameController = (function() {
     };
 
     var rightClickedBlockOperation = function(block) {
+        if(data.gameCompleted == 1) {
+            return;
+        }
         if(block.classList.contains('opened')) {
             return;
         } else if(block.classList.contains('flagged')) {
