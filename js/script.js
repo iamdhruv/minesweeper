@@ -2,6 +2,7 @@ var GameController = (function() {
     var levels;
     var data;
     var elapsedTimeHandler;
+
     levels = {
         "1": {fieldSize: 10, noOfBombs: 5},
         "2": {fieldSize: 10, noOfBombs: 10},
@@ -10,7 +11,6 @@ var GameController = (function() {
         "5": {fieldSize: 20, noOfBombs: 30},
         "6": {fieldSize: 20, noOfBombs: 40}
     };
-    
 
     var setInitialData = function() {
         data = {
@@ -24,16 +24,19 @@ var GameController = (function() {
             gameCompleted: 0
         };
     };
+
     var compareNumbersForSort = function(n1, n2) {
         return (n1 - n2);
-        };
+    };
     
     var getLevelMasterData = function(level) {
         return levels[level];
     };
+
     var setLevelSelected = function(level) {
         data.levelSelected = level;
     };
+
     var setRandomBlockIndices = function(totalBlocks, noOfIndices) {
         var indices = [];
         var randomNo;
@@ -48,6 +51,7 @@ var GameController = (function() {
         }
         return indices.sort(compareNumbersForSort);
     };
+
     var getRandomBlocksHavingBombs = function() {
         var levelMasterData;
         levelMasterData = getLevelMasterData(data.levelSelected);
@@ -57,9 +61,11 @@ var GameController = (function() {
         data.bombsIndices = setRandomBlockIndices(data.totalBlocks, data.noOfBombs);
         return data.bombsIndices;
     };
+
     var getData = function() {
         return data;
     };
+
     var getBlocksToCheck = function(currentBlockId) {
         var i,j, blocksNeeded, blocksToCheck;
         blocksNeeded = [];
@@ -97,6 +103,7 @@ var GameController = (function() {
                 block.style.backgroundColor = "red";
                 openAllBlocks();
                 clearInterval(elapsedTimeHandler);
+                document.querySelector('.time-elapsed').classList.remove('default-color');
                 document.querySelector('.time-elapsed').classList.add('danger-color');
                 document.getElementById('smiley-message').classList.add('danger-color');
             }
@@ -123,7 +130,7 @@ var GameController = (function() {
         } else {
             return false;
         }
-    }
+    };
 
     var adjacentBlocksOperations = function(block) {
         var currentBlockId, isBomb, isZero, isGreaterThanZero, blocksTocheck,res, isOpened,blocksNeeded, itemBlock;
@@ -249,11 +256,11 @@ var GameController = (function() {
             block.classList.add('flagged');
             document.getElementById('bombs-left').innerText = parseInt(document.getElementById('bombs-left').innerText) - 1;
         }
-    }
+    };
     
     var setTimeElapsedInterval = function() {
         elapsedTimeHandler = setInterval(setTimeElapsed, 1000);
-    }
+    };
     
     var setTimeElapsed = function() {
         data.sec = data.sec + 1;
@@ -263,11 +270,11 @@ var GameController = (function() {
             document.getElementById('time-elapsed-min').innerText = padNumberWithZero(data.min);
         }
         document.getElementById('time-elapsed-sec').innerText = padNumberWithZero(data.sec);
-    }
+    };
 
     var padNumberWithZero = function(num) {
         return num.toString().length == 1 ? "0" + num : num;
-    }
+    };
 
     var smileyClickListener = function() {
         if(data.gameCompleted) {
@@ -278,15 +285,24 @@ var GameController = (function() {
                 startNewGame();
             }
         }
-    }
+    };
 
     var startNewGame = function() {
         document.getElementById('controls-table').style.display = "none";
         document.querySelector('.minesweeper-field').innerHTML = "";
         document.querySelector(".mine-modal").style.display = "block";
         document.querySelector(".minesweeper-table").classList.remove('opened');
+        document.getElementById('smiley-message').innerText = "";
+        document.querySelector('.time-elapsed').classList.remove('success-color');
+        document.querySelector('.time-elapsed').classList.remove('danger-color');
+        document.querySelector('.time-elapsed').classList.add('default-color');
+        document.getElementById('time-elapsed-min').innerText = "00";
+        document.getElementById('time-elapsed-sec').innerText = "00";
+        console.log(document.getElementById('smiley'));
+        document.getElementById('smiley').src = "img/happy2.svg";
+        clearInterval(elapsedTimeHandler);
         setInitialData();
-    }
+    };
 
     return {
         setInitialData: setInitialData,
@@ -360,6 +376,7 @@ var MainController = (function(GameCtrl) {
     return {
         init: init
     }
+
 }(GameController));
 
 MainController.init();
