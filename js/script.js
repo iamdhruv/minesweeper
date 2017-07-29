@@ -1,6 +1,7 @@
 var GameController = (function() {
     var levels;
     var data;
+    var elapsedTimeHandler;
     levels = {
         "1": {fieldSize: 10, noOfBombs: 5},
         "2": {fieldSize: 10, noOfBombs: 10},
@@ -14,7 +15,9 @@ var GameController = (function() {
         bombsIndices: [],
         totalBlocks: 0,
         noOfBombs: 0,
-        fieldSize: 0
+        fieldSize: 0,
+        sec: 0,
+        min: 0
     };
     var compareNumbersForSort = function(n1, n2) {
         return (n1 - n2);
@@ -85,7 +88,9 @@ var GameController = (function() {
                 document.getElementById("smiley").src = 'img/unhappy.svg';
                 document.getElementById('smiley-message').innerText = 'You Lost!!';
                 document.getElementById('bombs-left').innerText = 0;
-                block.style.backgroundColor = "red";
+                block.classList.add('danger-color');
+                clearInterval(elapsedTimeHandler);
+                document.querySelector('.time-elapsed').classList.add('danger-color');
                 openAllBlocks();
                 // block.childNodes[0].src = 'img/red_bomb.svg';
             }
@@ -214,6 +219,24 @@ var GameController = (function() {
             document.getElementById('bombs-left').innerText = parseInt(document.getElementById('bombs-left').innerText) - 1;
         }
     }
+    
+    var setTimeElapsedInterval = function() {
+        elapsedTimeHandler = setInterval(setTimeElapsed, 1000);
+    }
+    
+    var setTimeElapsed = function() {
+        data.sec = data.sec + 1;
+        if(data.sec == 60) {
+            data.sec = 0;
+            data.min = data.min + 1;
+            document.getElementById('time-elapsed-min').innerText = padNumberWithZero(data.min);
+        }
+        document.getElementById('time-elapsed-sec').innerText = padNumberWithZero(data.sec);
+    }
+
+    var padNumberWithZero = function(num) {
+        return num.toString().length == 1 ? "0" + num : num;
+    }
 
     return {
         setLevelSelected: setLevelSelected,
@@ -223,13 +246,14 @@ var GameController = (function() {
         addBlocks: addBlocks,
         hideMineModal: hideMineModal,
         rightClickedBlockOperation: rightClickedBlockOperation,
-        showControlsTable: showControlsTable
+        showControlsTable: showControlsTable,
+        setTimeElapsedInterval: setTimeElapsedInterval
     }
     
 })();
 
 var MainController = (function(GameCtrl) {
-    var level, randomBlocksHavingBombs;
+    var level, randomBlocksHavingBombs, setTimeElapsedInterval;
     
     function setSelectLevelBtnListener() {
         var allLevelButtons;
@@ -241,6 +265,7 @@ var MainController = (function(GameCtrl) {
     
     function startGame() {
         var buttonId, level;
+        GameCtrl.setTimeElapsedInterval();
         GameCtrl.hideMineModal();
         buttonId = this.id;
         level = buttonId.split('-')[2];

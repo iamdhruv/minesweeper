@@ -116,3 +116,7 @@ table, td {
 #smiley-message {
     color: red;
 }
+
+.danger-color {
+    color: red;
+}
