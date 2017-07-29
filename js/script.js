@@ -10,15 +10,19 @@ var GameController = (function() {
         "5": {fieldSize: 20, noOfBombs: 30},
         "6": {fieldSize: 20, noOfBombs: 40}
     };
-    data = {
-        levelSelected: 0,
-        bombsIndices: [],
-        totalBlocks: 0,
-        noOfBombs: 0,
-        fieldSize: 0,
-        sec: 0,
-        min: 0,
-        gameCompleted: 0
+    
+
+    var setInitialData = function() {
+        data = {
+            levelSelected: 0,
+            bombsIndices: [],
+            totalBlocks: 0,
+            noOfBombs: 0,
+            fieldSize: 0,
+            sec: 0,
+            min: 0,
+            gameCompleted: 0
+        };
     };
     var compareNumbersForSort = function(n1, n2) {
         return (n1 - n2);
@@ -86,6 +90,7 @@ var GameController = (function() {
         var response = adjacentBlocksOperations(block);
         if(response) {
             if(response.isBomb) {
+                data.gameCompleted = 1;
                 document.getElementById("smiley").src = 'img/unhappy.svg';
                 document.getElementById('smiley-message').innerText = 'You Lost!!';
                 document.getElementById('bombs-left').innerText = 0;
@@ -264,7 +269,27 @@ var GameController = (function() {
         return num.toString().length == 1 ? "0" + num : num;
     }
 
+    var smileyClickListener = function() {
+        if(data.gameCompleted) {
+            startNewGame();
+        } else {
+            var confirmNewGame = confirm("Are You Sure??");
+            if(confirmNewGame) {
+                startNewGame();
+            }
+        }
+    }
+
+    var startNewGame = function() {
+        document.getElementById('controls-table').style.display = "none";
+        document.querySelector('.minesweeper-field').innerHTML = "";
+        document.querySelector(".mine-modal").style.display = "block";
+        document.querySelector(".minesweeper-table").classList.remove('opened');
+        setInitialData();
+    }
+
     return {
+        setInitialData: setInitialData,
         setLevelSelected: setLevelSelected,
         getRandomBlocksHavingBombs: getRandomBlocksHavingBombs,
         getData: getData,
@@ -273,7 +298,8 @@ var GameController = (function() {
         hideMineModal: hideMineModal,
         rightClickedBlockOperation: rightClickedBlockOperation,
         showControlsTable: showControlsTable,
-        setTimeElapsedInterval: setTimeElapsedInterval
+        setTimeElapsedInterval: setTimeElapsedInterval,
+        smileyClickListener: smileyClickListener
     }
     
 })();
@@ -291,6 +317,7 @@ var MainController = (function(GameCtrl) {
     
     function startGame() {
         var buttonId, level;
+        GameCtrl.setInitialData();
         GameCtrl.setTimeElapsedInterval();
         GameCtrl.hideMineModal();
         buttonId = this.id;
@@ -315,10 +342,15 @@ var MainController = (function(GameCtrl) {
         }
     }
 
+    function smileyClickListener(event) {
+        GameCtrl.smileyClickListener();
+    }
+
     function setUpEventListeners() {
         setSelectLevelBtnListener();
         document.querySelector('.minesweeper-table').addEventListener("click", blockClickListener);
         document.querySelector('.minesweeper-table').addEventListener("contextmenu", blockRightClickListener, false);
+        document.getElementById('smiley').addEventListener("click", smileyClickListener);
     }
 
     var init = function() {
