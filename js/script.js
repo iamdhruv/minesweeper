@@ -82,6 +82,9 @@ var GameController = (function() {
         var response = adjacentBlocksOperations(block);
         if(response) {
             if(response.isBomb) {
+                document.getElementById("smiley").src = 'img/unhappy.svg';
+                document.getElementById('smiley-message').innerText = 'You Lost!!';
+                document.getElementById('bombs-left').innerText = 0;
                 block.style.backgroundColor = "red";
                 openAllBlocks();
                 // block.childNodes[0].src = 'img/red_bomb.svg';

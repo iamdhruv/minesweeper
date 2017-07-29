@@ -96,7 +96,7 @@ table, td {
 }
 
 
-.smiley {
+#smiley {
     height: 40px;
 }
 
@@ -111,4 +111,8 @@ table, td {
     font-size: 14px;
     padding: 10px;
     
+}
+
+#smiley-message {
+    color: red;
 }
