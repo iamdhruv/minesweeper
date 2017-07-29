@@ -23,6 +23,9 @@ table {
 .bomb {
     /*background-color: red;*/
 }
+table {
+    box-shadow: 8px 8px 24px rgba(0, 0, 0, .5);
+}
 table, td {
     border-collapse: collapse;
     border: 4px solid #a8daf2;
@@ -84,4 +87,12 @@ td {
 .opened { 
     border: 4px solid #a8daf2;
     background-color: #a8daf2;
+}
+
+.flagged {
+    background-image: url('../img/flag.svg');
+}
+
+.questioned {
+    background-image: url('../img/block.svg');
 }

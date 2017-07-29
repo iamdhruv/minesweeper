@@ -19,6 +19,7 @@ var GameController = (function() {
     var compareNumbersForSort = function(n1, n2) {
         return (n1 - n2);
         };
+    
     var getLevelMasterData = function(level) {
         return levels[level];
     };
@@ -72,17 +73,21 @@ var GameController = (function() {
             }
         });
         return blocksNeeded;
-    }
+    };
 
     var clickedBlockOperation = function(block) {
+        if(block.classList.contains('flagged') || block.classList.contains('questioned')) {
+            return;
+        }
         var response = adjacentBlocksOperations(block);
         if(response) {
             if(response.isBomb) {
                 block.style.backgroundColor = "red";
                 openAllBlocks();
+                // block.childNodes[0].src = 'img/red_bomb.svg';
             }
         }
-    }
+    };
 
     var adjacentBlocksOperations = function(block) {
         var currentBlockId, isBomb, isZero, isGreaterThanZero, blocksTocheck,res, isOpened,blocksNeeded, itemBlock;
@@ -114,7 +119,7 @@ var GameController = (function() {
             block.classList.add('opened');
             block.innerHTML = block.getAttribute('data-no_of_adjacent_bombs');
         }
-    }
+    };
 
     var openAllBlocks = function() {
         var isBomb, isZero, img;
@@ -134,7 +139,7 @@ var GameController = (function() {
                 blocks[i].innerHTML = blocks[i].getAttribute('data-no_of_adjacent_bombs');
             } 
         }
-    }
+    };
 
     var addBlocks = function(fieldSize, blocksHavingBombs) {
 
@@ -181,10 +186,21 @@ var GameController = (function() {
                 }
             }
         }
-    }
+    };
 
     var hideMineModal = function() {
         document.getElementById('select-level').style.display = "none";
+    };
+
+    var rightClickedBlockOperation = function(block) {
+        if(block.classList.contains('flagged')) {
+            block.classList.remove('flagged');
+            block.classList.add('questioned');
+        } else if(block.classList.contains('questioned')) {
+            block.classList.remove('questioned');
+        } else {
+            block.classList.add('flagged');
+        }
     }
 
     return {
@@ -193,7 +209,8 @@ var GameController = (function() {
         getData: getData,
         clickedBlockOperation: clickedBlockOperation,
         addBlocks: addBlocks,
-        hideMineModal: hideMineModal
+        hideMineModal: hideMineModal,
+        rightClickedBlockOperation: rightClickedBlockOperation
     }
     
 })();
@@ -225,9 +242,18 @@ var MainController = (function(GameCtrl) {
             GameCtrl.clickedBlockOperation(event.target);
         }
     }
+
+    function blockRightClickListener(event) {
+        event.preventDefault();
+        if(event.target && event.target.classList.contains('single-block')) {
+            GameCtrl.rightClickedBlockOperation(event.target);
+        }
+    }
+
     function setUpEventListeners() {
         setSelectLevelBtnListener();
         document.querySelector('.minesweeper-table').addEventListener("click", blockClickListener);
+        document.querySelector('.minesweeper-table').addEventListener("contextmenu", blockRightClickListener, false);
     }
 
     var init = function() {
