@@ -5,6 +5,13 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="css/style.css" rel="stylesheet">
+        <script>
+            if(sessionStorage.getItem('dummy')) {
+                alert('dummy');   
+            } else {
+                sessionStorage.setItem('dummy', 'dummy');   
+            }
+        </script>
     </head>
     <body>
     <h2 id="minesweeper-heading">Minesweeper</h2>
